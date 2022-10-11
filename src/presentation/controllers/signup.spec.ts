@@ -13,4 +13,4 @@ describe('Singup Controller', () => {
     const httpResponse = sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
   })
-})
+});
