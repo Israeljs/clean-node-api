@@ -3,7 +3,7 @@ import { HttpResponse, HttpRequest } from "../protocols/http"
 import { badRequest } from "../helpers/http-helpers"
 import { Controller } from "../protocols/controller"
 
-export class SingUpController implements Controller {
+export class SignUpController implements Controller {
   handle(httpRequest: HttpRequest): HttpResponse {
     const requestFields = ['name', 'email', 'password', 'passwordConfirmation']
     for (const field of requestFields) {
