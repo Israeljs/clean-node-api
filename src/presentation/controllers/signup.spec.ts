@@ -21,7 +21,7 @@ test('Shuld return 400 if no email is provided', () => {
   const sut = new SingUpController()
   const httpRequest = {
     body: {
-      name: 'no_name',
+      name: 'any-name',
       password: 'test',
       passwordConfimation: 'test',
     }
@@ -29,4 +29,18 @@ test('Shuld return 400 if no email is provided', () => {
   const httpResponse = sut.handle(httpRequest)
   expect(httpResponse.statusCode).toBe(400)
   expect(httpResponse.body).toEqual(new MissingParamError('email'))
+})
+
+test('Shuld return 400 if no password is provided', () => {
+  const sut = new SingUpController()
+  const httpRequest = {
+    body: {
+      name: 'any-name',
+      email: 'test@example.com',
+      passwordConfimation: 'test',
+    }
+  }
+  const httpResponse = sut.handle(httpRequest)
+  expect(httpResponse.statusCode).toBe(400)
+  expect(httpResponse.body).toEqual(new MissingParamError('password'))
 })
