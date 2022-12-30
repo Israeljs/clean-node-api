@@ -13,7 +13,7 @@ const makeEmailValidator = (): EmailValidator => {
 
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
-    add (account: AddAccountModel): AccountModel {
+    add(account: AddAccountModel): AccountModel {
       const fakeAccount = {
         id: 'valid-id',
         name: 'valid-name',
@@ -164,23 +164,42 @@ describe('SignUp Controller', () => {
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new ServerError())
   })
-})
 
-test('Shuld call EmailValidator with correct email', () => {
-  const { sut, addAccountStub } = makeSut()
-  const addSpy = jest.spyOn(addAccountStub, 'add')
-  const httpRequest = {
-    body: {
+  test('Shuld return 500 if AddAccount throws', () => {
+    const { sut, addAccountStub } = makeSut()
+    jest.spyOn(addAccountStub, 'add').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const httpRequest = {
+      body: {
+        name: 'any-name',
+        email: 'any_email@example.com',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+    const httpResponse = sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new ServerError())
+  })
+
+  test('Shuld call EmailValidator with correct email', () => {
+    const { sut, addAccountStub } = makeSut()
+    const addSpy = jest.spyOn(addAccountStub, 'add')
+    const httpRequest = {
+      body: {
+        name: 'any-name',
+        email: 'any_email@example.com',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+    sut.handle(httpRequest)
+    expect(addSpy).toHaveBeenCalledWith({
       name: 'any-name',
       email: 'any_email@example.com',
       password: 'any_password',
-      passwordConfirmation: 'any_password'
-    }
-  }
-  sut.handle(httpRequest)
-  expect(addSpy).toHaveBeenCalledWith({
-    name: 'any-name',
-    email: 'any_email@example.com',
-    password: 'any_password',
+    })
   })
 })
+
