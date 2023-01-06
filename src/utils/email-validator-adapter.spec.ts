@@ -3,7 +3,7 @@ import { EmailValidatorAdapter } from "./email-validator"
 describe('Emailvalidator Adapter', () => {
   test('Should return false if validator returns false', () => {
     const sut = new EmailValidatorAdapter()
-    const isValid = sut.isValid('invalid_email@mail.com')
+    const isValid = sut.isValid('invalid_email@mailcom')
     expect(isValid).toBe(false)
   })
 
